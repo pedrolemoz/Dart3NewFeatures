@@ -23,13 +23,17 @@ class GetWeatherForecastImpl extends GetWeatherForecast {
       (index) {
         final now = DateTime.now();
         final date = now.add(Duration(days: index));
+        const location = (city, state);
+        final weather = (
+          '${random.nextInt(32)}° C',
+          '${random.nextInt(50)}%',
+          '${random.nextInt(50)}%',
+          '${random.nextInt(50)} km/h'
+        );
+
         return WeatherData(
-          city: city,
-          state: state,
-          temperature: '${random.nextInt(32)}° C',
-          rain: '${random.nextInt(50)}%',
-          humidity: '${random.nextInt(50)}%',
-          wind: '${random.nextInt(50)} km/h',
+          location: location,
+          weather: weather,
           date: date,
         );
       },

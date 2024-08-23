@@ -24,6 +24,9 @@ class _SuccessComponentState extends State<SuccessComponent> {
     final forecast = widget.data.toList();
     final first = forecast.removeAt(0);
 
+    final (city, state) = first.location;
+    final (temperature, rain, humidity, wind) = first.weather;
+
     return Scaffold(
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () => bloc.add(GetForecastEvent(triggerError: true)),
@@ -41,7 +44,7 @@ class _SuccessComponentState extends State<SuccessComponent> {
                   const Icon(UniconsLine.location_point, size: 32),
                   const SizedBox(width: 8),
                   Text(
-                    '${first.city}, ${first.state}',
+                    '$city, $state',
                     style: const TextStyle(fontSize: 24),
                   ),
                 ],
@@ -52,7 +55,7 @@ class _SuccessComponentState extends State<SuccessComponent> {
                 children: [
                   const Icon(UniconsLine.cloud_sun, size: 80),
                   const SizedBox(width: 16),
-                  Text(first.temperature, style: const TextStyle(fontSize: 80)),
+                  Text(temperature, style: const TextStyle(fontSize: 80)),
                 ],
               ),
               const SizedBox(height: 32),
@@ -62,17 +65,17 @@ class _SuccessComponentState extends State<SuccessComponent> {
                   child: Column(
                     children: [
                       Text(
-                        'Chuva: ${first.rain}',
+                        'Chuva: $rain',
                         style: const TextStyle(fontSize: 20),
                       ),
                       const SizedBox(height: 16),
                       Text(
-                        'Umidade: ${first.humidity}',
+                        'Umidade: $humidity',
                         style: const TextStyle(fontSize: 20),
                       ),
                       const SizedBox(height: 16),
                       Text(
-                        'Vento: ${first.wind}',
+                        'Vento: $wind',
                         style: const TextStyle(fontSize: 20),
                       ),
                     ],
@@ -90,7 +93,7 @@ class _SuccessComponentState extends State<SuccessComponent> {
                     return ListTile(
                       leading: const Icon(UniconsLine.cloud_sun, size: 56),
                       title: Text(
-                        info.temperature,
+                        info.weather.$1,
                         style: const TextStyle(fontSize: 24),
                       ),
                       subtitle: Text(

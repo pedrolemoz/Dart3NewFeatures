@@ -1,19 +1,11 @@
 class WeatherData {
-  final String city;
-  final String state;
-  final String temperature;
-  final String rain;
-  final String humidity;
-  final String wind;
+  final (String city, String state) location;
+  final (String temperature, String rain, String humidity, String wind) weather;
   final DateTime date;
 
   const WeatherData({
-    required this.city,
-    required this.state,
-    required this.temperature,
-    required this.rain,
-    required this.humidity,
-    required this.wind,
+    required this.location,
+    required this.weather,
     required this.date,
   });
 }
