@@ -1,32 +1,32 @@
 import 'package:bloc/bloc.dart';
 
 import '../usecases/get_weather_forecast.dart';
+import '../utils/result.dart';
 import 'weather_events.dart';
 import 'weather_states.dart';
 
 class WeatherBloc extends Bloc<WeatherEvent, WeatherState> {
   final GetWeatherForecast getWeatherForecast;
 
-  WeatherBloc(this.getWeatherForecast) : super(const WeatherState.initial()) {
-    on<WeatherEvent>(
-      (event, emit) async {
-        await event.when(
-          getForecast: (triggerError) async {
-            emit(const WeatherState.gettingForecast());
+  WeatherBloc(this.getWeatherForecast) : super(InitialState()) {
+    on<GetForecastEvent>(_onGetForecastEvent);
+  }
 
-            await Future.delayed(const Duration(seconds: 1));
+  Future<void> _onGetForecastEvent(
+    GetForecastEvent event,
+    Emitter<WeatherState> emit,
+  ) async {
+    emit(GettingForecastState());
 
-            final result = await getWeatherForecast(triggerError);
+    await Future.delayed(const Duration(seconds: 1));
 
-            final state = result.fold(
-              (failure) => WeatherState.unableToGetForecast(failure.toString()),
-              (success) => WeatherState.successfullyGotForecast(success),
-            );
+    final result = await getWeatherForecast(event.triggerError);
 
-            emit(state);
-          },
-        );
-      },
-    );
+    final state = switch (result) {
+      Error() => UnableToGetForecastState(message: result.value.toString()),
+      Success() => SuccessfullyGotForecastState(forecast: result.value)
+    };
+
+    emit(state);
   }
 }

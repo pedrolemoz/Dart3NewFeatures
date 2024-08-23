@@ -1,19 +1,18 @@
 import 'dart:math';
 
-import 'package:dartz/dartz.dart';
-
 import '../entities/weather_data.dart';
+import '../utils/result.dart';
 
 abstract class GetWeatherForecast {
-  Future<Either<Exception, List<WeatherData>>> call(bool triggerError);
+  Future<Result<Exception, List<WeatherData>>> call(bool triggerError);
 }
 
 class GetWeatherForecastImpl extends GetWeatherForecast {
   @override
-  Future<Either<Exception, List<WeatherData>>> call(bool triggerError) async {
+  Future<Result<Exception, List<WeatherData>>> call(bool triggerError) async {
     await Future.delayed(const Duration(milliseconds: 200));
 
-    if (triggerError) return Left(Exception('Error triggered by user'));
+    if (triggerError) return Error(Exception('Error triggered by user'));
 
     const city = 'Fortaleza';
     const state = 'CE';
@@ -36,6 +35,6 @@ class GetWeatherForecastImpl extends GetWeatherForecast {
       },
     );
 
-    return Right(data);
+    return Success(data);
   }
 }

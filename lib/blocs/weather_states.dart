@@ -1,18 +1,19 @@
-import 'package:freezed_annotation/freezed_annotation.dart';
-
 import '../entities/weather_data.dart';
 
-part 'weather_states.freezed.dart';
+sealed class WeatherState {}
 
-@freezed
-class WeatherState with _$WeatherState {
-  const WeatherState._();
+final class InitialState extends WeatherState {}
 
-  const factory WeatherState.initial() = _InitialState;
-  const factory WeatherState.gettingForecast() = _GettingForecastState;
-  const factory WeatherState.successfullyGotForecast(
-    List<WeatherData> forecast,
-  ) = _SuccessfullyGotForecastState;
-  const factory WeatherState.unableToGetForecast(String message) =
-      _UnableToGetForecastState;
+final class GettingForecastState extends WeatherState {}
+
+final class SuccessfullyGotForecastState extends WeatherState {
+  final List<WeatherData> forecast;
+
+  SuccessfullyGotForecastState({required this.forecast});
+}
+
+final class UnableToGetForecastState extends WeatherState {
+  final String message;
+
+  UnableToGetForecastState({required this.message});
 }
